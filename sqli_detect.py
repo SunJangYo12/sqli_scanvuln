@@ -17,7 +17,7 @@ print(Fore.GREEN + r'''
  |_____/ \__, |_|_| |_____/ \___|\__\___|\___|\__\___/|_|   
            | |                                             
            |_|                                             
-    Sqli Detector with Expanded Payloads - Coded by Aung San Oo
+    Sqli Detector with Expanded Payloads - Coded by Aung San & Setsuna jin
     Github Page : https://aungsanoo.com
 ''')
 
@@ -51,7 +51,7 @@ def is_vulnerable(response):
     for db_type, error_list in errors.items():
         for error in error_list:
             if error in content:
-                print(Fore.GREEN + f"[!] Potential SQL Injection vulnerability detected: {error} ({db_type})\n\n")
+                print(Fore.GREEN + f"[!] Potential SQL Injection vulnerability detected: {error} ({db_type})")
                 return True
     return False
 
@@ -119,8 +119,8 @@ def scan(url, cpayload):
 
                 # Check for SQL Injection
                 if is_vulnerable(response):
-                    print(Fore.BLUE + f"url: {full_url}]")
-                    print(Fore.GREEN + f"[+] SQL Injection Found with payload[{payload}]\n")
+                    print(Fore.BLUE + f"URL: {full_url}")
+                    print(Fore.GREEN + f"[+] SQL Injection Found with payload[{payload}]\n\n")
                     vulnerable = True
                 else:
                     print(Fore.RED + f"[-] No vulnerability with payload[{payload}]\n")
@@ -140,7 +140,7 @@ def scan(url, cpayload):
 if __name__ == "__main__":
     try:
         choice = input(Fore.CYAN + "[*] Choose scan type (1 for single URL, 2 for URLs from file): ")
-        cpayload = input(Fore.CYAN + "[*] Enter path payload (ENTER for default): ")
+        cpayload = input(Fore.MAGENTA + "[*] Enter path payload (ENTER for default): ")
 
 
         if choice == "1":

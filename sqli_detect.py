@@ -124,9 +124,9 @@ def scan(url, cpayload):
 
                 # WAF Detection
                 if response.status_code in [403, 406, 429]:
-                    print(Fore.RED + f"[!] WAF Detected: [{response.status_code}] len[{content_length}] Payload['{payload}']")
+                    print(Fore.MAGENTA + f"[!] WAF Detected")
                 elif abs(content_length - baseline_length) > 50:
-                    print(Fore.YELLOW + f"[!] WAF behavior detected: HTTP[{response.status_code}] len[{content_length}] payload['{payload}']")
+                    print(Fore.YELLOW + f"[!] WAF behavior detected")
 
                 # Check for SQL Injection
                 if is_vulnerable(response):

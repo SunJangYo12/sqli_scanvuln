@@ -28,7 +28,7 @@ def write_log(text):
     filename = f"vuln_{datename}.txt"
 
     with open(filename, 'a') as f:
-        f.write(f"{text}\n\n")
+        f.write(f"{text}")
 
 
 # Function to detect SQL errors in HTTP response
@@ -61,8 +61,8 @@ def is_vulnerable(response):
     for db_type, error_list in errors.items():
         for error in error_list:
             if error in content:
-                #print(Fore.GREEN + f"[!] Potential SQL Injection vulnerability detected: {error} ({db_type})")
                 print(Fore.GREEN + f"[!] Potential SQL Injection vulnerability detected: ({db_type}) ({response.status_code})")
+                write_log(f"[!] Potential SQL Injection vulnerability detected: ({db_type}) >> {error} \n")
                 return True
     return False
 
@@ -132,14 +132,14 @@ def scan(url, cpayload):
                 if is_vulnerable(response):
                     print(Fore.GREEN + f"[+] SQL Injection Found[ {full_url} ]\n\n")
                     vulnerable = True
-                    write_log(f"SQL Injection Found: HTTP[{response.status_code}] len[{content_length}] {full_url}")
+                    write_log(f"[+] SQL Injection Found: HTTP[{response.status_code}] len[{content_length}] {full_url}\n\n")
                 else:
                     print(Fore.RED + f"[-] No vulnerability HTTP({response.status_code}) len({content_length}) with payload[{payload}]\n")
 
                 # Server Error
                 if response.status_code in [500]:
                     print(Fore.YELLOW + f"[+] Server Error detected: HTTP[{response.status_code}] len[{content_length}] payload['{payload}']")
-                    write_log(f"Potential Found: HTTP[{response.status_code}] len[{content_length}] {full_url}")
+                    write_log(f"[+] Potential Found: HTTP[{response.status_code}] len[{content_length}] {full_url}\n")
 
 
             except RequestException as e:

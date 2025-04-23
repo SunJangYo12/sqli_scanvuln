@@ -62,7 +62,7 @@ def is_vulnerable(response):
         for error in error_list:
             if error in content:
                 print(Fore.GREEN + f"[!] Potential SQL Injection vulnerability detected: ({db_type}) ({response.status_code})")
-                write_log(f"[!] Potential SQL Injection vulnerability detected: ({db_type}) >> {error} \n")
+                write_log(f"[*] Potential SQL Injection vulnerability detected: ({db_type}) >> {error} \n")
                 return True
     return False
 

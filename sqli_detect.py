@@ -51,7 +51,8 @@ def is_vulnerable(response):
     for db_type, error_list in errors.items():
         for error in error_list:
             if error in content:
-                print(Fore.GREEN + f"[!] Potential SQL Injection vulnerability detected: {error} ({db_type})")
+                #print(Fore.GREEN + f"[!] Potential SQL Injection vulnerability detected: {error} ({db_type})")
+                print(Fore.GREEN + f"[!] Potential SQL Injection vulnerability detected: ({db_type}) ({response.status_code})")
                 return True
     return False
 
@@ -119,11 +120,10 @@ def scan(url, cpayload):
 
                 # Check for SQL Injection
                 if is_vulnerable(response):
-                    print(Fore.BLUE + f"URL: {full_url}")
-                    print(Fore.GREEN + f"[+] SQL Injection Found with payload[{payload}]\n\n")
+                    print(Fore.GREEN + f"[+] SQL Injection Found[ {full_url} ]\n\n")
                     vulnerable = True
                 else:
-                    print(Fore.RED + f"[-] No vulnerability with payload[{payload}]\n")
+                    print(Fore.RED + f"[-] No vulnerability HTTP({response.status_code}) len({content_length}) with payload[{payload}]\n")
             except RequestException as e:
                 print(Fore.RED + f"[!] Error with payload['{payload}'] ERR[{e}]")
     except RequestException as e:

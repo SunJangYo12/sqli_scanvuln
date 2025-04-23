@@ -63,7 +63,7 @@ pip install requests colorama
 
    # SQLi
    cat "output.txt" | gf sqli | sed 's/=.*/=/' | sort -u > "sqli_output.txt"
-   ``
+   ```
 
 ## Usage
 1. Run the script:

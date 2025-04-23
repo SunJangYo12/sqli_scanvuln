@@ -30,6 +30,20 @@ Install the required libraries using:
 pip install requests colorama
 ```
 
+## Dork target
+1. google dork:
+   ```bash
+   git clone https://github.com/BullsEye0/dorks-eye
+   python dorks-eye.py
+   query > site:id inurl:/product.php?id=
+   display > 100
+
+   cat dork_results.txt | grep -E ".php|.asp|.aspx|.jspx|.jsp" | grep '=' | sed 's/=.*/=/' | sort | uniq > bsqli.txt
+   python3 sqli_detect.py
+   URL > 2
+   file > bsqli.txt
+   ```
+
 ## Usage
 1. Run the script:
    ```bash

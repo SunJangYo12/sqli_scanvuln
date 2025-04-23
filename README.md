@@ -44,25 +44,25 @@ pip install requests colorama
    file > bsqli.txt
    ```
 2. Input url and filter:
-   ```
+   ```bash
    # Step 1: Run katana with passive sources and save output to a unified file (output/output.txt)
-   echo "$website_url" | katana -ps -pss waybackarchive,commoncrawl,alienvault -f qurl | uro > "output.txt"
+   $ echo "$website_url" | katana -ps -pss waybackarchive,commoncrawl,alienvault -f qurl | uro > "output.txt"
 
    # Step 2: Run katana actively with depth 5 and append results to output/output.txt
-   katana -u "$website_url" -d 5 -f qurl | uro | anew "output.txt"
+   $ katana -u "$website_url" -d 5 -f qurl | uro | anew "output.txt"
 
    # Step 3: Filter output/output.txt for different vulnerabilities
    # XSS
-   cat "output.txt" | Gxss | kxss | grep -oP '^URL: \K\S+' | sed 's/=.*/=/' | sort -u > "xss_output.txt"
+   $ cat "output.txt" | Gxss | kxss | grep -oP '^URL: \K\S+' | sed 's/=.*/=/' | sort -u > "xss_output.txt"
 
    # Open Redirect
-   cat "output.txt" | gf or | sed 's/=.*/=/' | sort -u > "open_redirect_output.txt"
+   $ cat "output.txt" | gf or | sed 's/=.*/=/' | sort -u > "open_redirect_output.txt"
 
    # LFI
-   cat "output.txt" | gf lfi | sed 's/=.*/=/' | sort -u > "lfi_output.txt"
+   $ cat "output.txt" | gf lfi | sed 's/=.*/=/' | sort -u > "lfi_output.txt"
 
    # SQLi
-   cat "output.txt" | gf sqli | sed 's/=.*/=/' | sort -u > "sqli_output.txt"
+   $ cat "output.txt" | gf sqli | sed 's/=.*/=/' | sort -u > "sqli_output.txt"
    ```
 
 ## Usage

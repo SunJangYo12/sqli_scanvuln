@@ -30,7 +30,6 @@ def write_log(text):
     with open(filename, 'a') as f:
         f.write(f"{text}")
 
-
 # Function to detect SQL errors in HTTP response
 def is_vulnerable(response):
     """
@@ -65,6 +64,16 @@ def is_vulnerable(response):
                 write_log(f"[*] Potential SQL Injection vulnerability detected: ({db_type}) >> {error} \n")
                 return True
     return False
+
+
+def requests_engine(eurl):
+    headers = {
+        "User-Agent": "Mozilla/5.0"
+    }
+
+    return requests.get(eurl, headers=headers, timeout=5)
+
+
 
 # Function to scan a URL for SQL injection vulnerabilities and detect WAF
 def scan(url, cpayload):
@@ -113,13 +122,13 @@ def scan(url, cpayload):
 
     try:
         # Fetch baseline response
-        baseline_response = requests.get(url, headers=headers, timeout=5)
+        baseline_response = requests_engine(url)
         baseline_length = len(baseline_response.content)
 
         for payload in payloads:
             full_url = f"{url}{payload}"
             try:
-                response = requests.get(full_url, headers=headers, timeout=5)
+                response = requests_engine(full_url)
                 content_length = len(response.content)
 
                 # WAF Detection

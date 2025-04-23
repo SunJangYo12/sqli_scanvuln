@@ -63,6 +63,11 @@ pip install requests colorama
 
    # SQLi
    $ cat "output.txt" | gf sqli | sed 's/=.*/=/' | sort -u > "sqli_output.txt"
+
+   # Bonus
+   $ cat www.mybag.com.txt | gf sqli | sort -u | httpx -sc | tee temp
+   $ cat temp | grep 200 | awk '{print $1}'
+
    ```
 
 ## Usage

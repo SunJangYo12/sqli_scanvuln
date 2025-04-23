@@ -1,8 +1,10 @@
 from colorama import init, Fore 
 import requests
 from requests.exceptions import RequestException
+from datetime import datetime
 import sys
 import time
+
 
 # Initialize colorama for colored terminal output
 init(autoreset=True)
@@ -20,6 +22,14 @@ print(Fore.GREEN + r'''
     Sqli Detector with Expanded Payloads - Coded by Aung San & Setsuna jin
     Github Page : https://aungsanoo.com
 ''')
+
+def write_log(text):
+    datename = datetime.now().strftime("%Y-%m-%d")
+    filename = f"vuln_{datename}.txt"
+
+    with open(filename, 'a') as f:
+        f.write(f"{text}\n\n")
+
 
 # Function to detect SQL errors in HTTP response
 def is_vulnerable(response):
@@ -116,14 +126,22 @@ def scan(url, cpayload):
                 if response.status_code in [403, 406, 429]:
                     print(Fore.RED + f"[!] WAF Detected: [{response.status_code}] len[{content_length}] Payload['{payload}']")
                 elif abs(content_length - baseline_length) > 50:
-                    print(Fore.YELLOW + f"[!] WAF behavior detected: [{response.status_code}] len[{content_length}] payload['{payload}']")
+                    print(Fore.YELLOW + f"[!] WAF behavior detected: HTTP[{response.status_code}] len[{content_length}] payload['{payload}']")
 
                 # Check for SQL Injection
                 if is_vulnerable(response):
                     print(Fore.GREEN + f"[+] SQL Injection Found[ {full_url} ]\n\n")
                     vulnerable = True
+                    write_log(f"SQL Injection Found: HTTP[{response.status_code}] len[{content_length}] {full_url}")
                 else:
                     print(Fore.RED + f"[-] No vulnerability HTTP({response.status_code}) len({content_length}) with payload[{payload}]\n")
+
+                # Server Error
+                if response.status_code in [500]:
+                    print(Fore.YELLOW + f"[+] Server Error detected: HTTP[{response.status_code}] len[{content_length}] payload['{payload}']")
+                    write_log(f"Potential Found: HTTP[{response.status_code}] len[{content_length}] {full_url}")
+
+
             except RequestException as e:
                 print(Fore.RED + f"[!] Error with payload['{payload}'] ERR[{e}]")
     except RequestException as e:

@@ -66,6 +66,25 @@ def is_vulnerable(response):
     return False
 
 
+# Function to handle many request like post,put,. etc
+# Paste here for request header and body from burpsuite
+# With cookie and other header. example:
+#   url = "https://contoh.com/api/login"
+#       headers = {
+#           "Host": "contoh.com",
+#           "User-Agent": "Mozilla/5.0",
+#           "Content-Type": "application/json",
+#           "Authorization": "Bearer xyz123"
+#       }
+#   data = {
+#       "username": "admin",
+#       "password": "password123"
+#   }
+#   response = requests.post(url, json=data, headers=headers)
+#
+# - Gunakan json=data kalau body-nya berbentuk JSON, biar otomatis dikonversi
+#   dan header Content-Type di-set
+# - Gunakan data=data kalau body-nya berbentuk encode, contoh application/x-www-form-urlencode
 def requests_engine(eurl):
     headers = {
         "User-Agent": "Mozilla/5.0"
@@ -106,9 +125,6 @@ def scan(url, cpayload):
         "ORDER BY 28--", "ORDER BY 29--", "ORDER BY 30--",
         "ORDER BY 31337--"
     ]
-    headers = {
-        "User-Agent": "Mozilla/5.0"
-    }
 
     try:
         with open(cpayload, "r") as file:

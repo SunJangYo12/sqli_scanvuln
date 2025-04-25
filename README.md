@@ -21,6 +21,9 @@ This script is a powerful tool for detecting **SQL Injection vulnerabilities** a
 - **User-Friendly Output**:
   - Color-coded results for vulnerabilities, WAF detection, and safe responses.
 
+- **Resume / Restore scanning**:
+  - Contine scanning with last url, the tempory resume saved in `./.sqli_resume`
+
 ## Requirements
 - Python 3.6 or later
 - Libraries: `requests`, `colorama`

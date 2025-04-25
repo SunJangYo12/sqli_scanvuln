@@ -30,6 +30,19 @@ def write_log(text):
     with open(filename, 'a') as f:
         f.write(f"{text}")
 
+def get_resume():
+    try:
+        with open(".sqli_resume", 'r') as f:
+            return int(f.read())
+    except:
+        return 0
+
+def set_resume(text):
+    with open(".sqli_resume", 'w') as f:
+        f.write(str(text))
+
+
+
 # Function to detect SQL errors in HTTP response
 def is_vulnerable(response):
     """
@@ -201,12 +214,26 @@ if __name__ == "__main__":
             try:
                 with open(file_path, "r") as file:
                     urls = file.readlines()
-                    for url in urls:
-                        url = url.strip()
+                    total = len(urls)
+                    start_from = get_resume()
+
+                    for idx in range(start_from, total):
+                        url = urls[idx].strip()
+
                         if url.startswith("http://") or url.startswith("https://"):
+
+                            print(f"{idx}/{total}   {url}")
                             scan(url, cpayload)
+
+                            set_resume(idx+1)
+
                         else:
                             print(Fore.RED + f"[!] Skipping invalid URL: {url}")
+
+                        
+                        
+
+
             except FileNotFoundError:
                 print(Fore.RED + "[!] File not found. Please check the file path.")
         else:

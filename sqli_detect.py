@@ -185,6 +185,10 @@ def scan(url, cpayload):
 
             except RequestException as e:
                 print(Fore.RED + f"[!] Error with payload['{payload}'] ERR[{e}]")
+
+    except SSLError as e:
+        print(Fore.RED + f"[!] SSL error: {e}")
+
     except RequestException as e:
         print(Fore.RED + f"[!] Could not fetch baseline response: {e}")
         exit();
@@ -240,9 +244,5 @@ if __name__ == "__main__":
         else:
             print(Fore.RED + "[!] Invalid choice. Please choose 1 or 2.")
 
-    except KeyboardInterrupt:
-        print(Fore.YELLOW + "\n[-] Script interrupted by user.")
     except Exception as e:
         print(Fore.RED + f"[!] An unexpected error occurred: {e}")
-    finally:
-        input(Fore.CYAN + "\nPress Enter to Exit.")

@@ -187,6 +187,7 @@ def scan(url, cpayload):
                 print(Fore.RED + f"[!] Error with payload['{payload}'] ERR[{e}]")
     except RequestException as e:
         print(Fore.RED + f"[!] Could not fetch baseline response: {e}")
+        exit();
 
     print(Fore.BLUE + "[!] SQL Injection scan complete.")
 
